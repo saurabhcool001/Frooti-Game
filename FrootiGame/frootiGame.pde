@@ -52,11 +52,8 @@ void setup()
   // Start capturing
   cam = new Capture(this, 1280, 720);
   cam.start();
-  //opencv = new OpenCV( this );            //  Initialises the OpenCV library
-  //opencv.capture( 1280/2, 720/2 );             //  Sets the capture size to 640 x 480
   opencv = new OpenCV(this, cam.width, cam.height);
-  //opencv = new OpenCV(this, cam.width, cam.height);
-  
+
   
   movementImg = new PImage( 1280, 720 );   //  Initialises the PImage that holds the movement image
   start_screen=loadImage("Frooti Freakout Game Play.jpg");
@@ -69,7 +66,6 @@ void setup()
   score_nt=loadImage("Score_NT.png");
   score_vg=loadImage("Score_VG.png");
   fo=loadImage("Freak_Out_LD.png");
-  //post_score=loadImage("Untitled-1.png");
   splash=loadImage("Bottle_new.png");
   center_mango=loadImage("center_mango_01.png");
   sw=new StopWatchTimer();
@@ -80,8 +76,6 @@ void setup()
   bubbles1 = new ArrayList();              //  Initialises the ArrayList
   bubbles2=new ArrayList();
 
-
-  //bubblePNG = loadImage("bubble.png");    //  Load the bubble image into memory
   mangoPNG=loadImage("Mango75.png");
   mangoPNG1=loadImage("Mango75.png");
   mangoPNG2=loadImage("Mango100 2.png");
@@ -97,8 +91,6 @@ void captureEvent(Capture cam) {
 
 void draw()
 {
- // println(frameRate);
-
   
   if (gameState==INTRO) {
     intro();
@@ -127,16 +119,9 @@ void run_game() {
    opencv.loadImage(cam);
    opencv.flip(OpenCV.HORIZONTAL);
    src = opencv.getOutput();  
-   
-  //opencv.diff(src);                           //  Creates a difference image
   opencv.gray();                //  Converts to greyscale
   opencv.threshold(threshold);  
-  //opencv.adaptiveThreshold(200,1);
-  //opencv.blur(1280,200);                //  Blur to remove camera noise
-  //opencv.threshold(threshold);                       //  Thresholds to convert to black and white
-  ////movementImg = opencv.getSnapshot();               //  Puts the OpenCV buffer into an image object
   movementImg = src;
-  //opencv.useColor(RGB);
   image( src, 0, 0, 1280, 720 ); 
   
   
@@ -227,7 +212,6 @@ void run_game() {
     fill(#F58E07);
     noStroke();
     rect(37, 678, 60, -poppedBubbles*0.5);
-    //println(-poppedBubbles*0.5);
   }
   else{
     fill(#F58E07);
@@ -240,33 +224,25 @@ void run_game() {
   
   int s=sw.second();
 
-
- //opencv.updateBackground();
-  //opencv.remember(OpenCV.SOURCE, OpenCV.FLIP_HORIZONTAL);    //  Remembers the camera image so we can generate a difference image next frame. Since we've
-//opencv.remember();
   image(img1, 0, 0, 1280, 720);
   fill(#F8EF21);
   
   textFont(font,45);                                                //  flipped the image earlier, we need to flip it here too.
-  //text(""+poppedBubbles, 305, 696.5);                //  Displays some text showing how many bubbles have been popped
+
   text(""+nf(poppedBubbles,3), 280, 694);                //  Displays some text showing how many bubbles have been popped
 
   print1=(40-sw.second());
-  //text("Time:  "+(sw.hour())+":"+(sw.minute())+":"+(40-sw.second()),10,150);
-  //text((sw.hour())+":"+(sw.minute())+":"+print1, 160, 705);
-  //text(print1, 160, 695);
+
   text(nf(sw.minute(),2)+":"+print1,130,695);
 
    if (print1==32) {
     bubbles2.add(new Bubble(int(random(510, 12000)), -mangoPNG.height, mangoPNG.width, mangoPNG.height));   //  Adds a new bubble to the array with a random x position
-    //bubbles2.add(new Bubble(int(random(1270,1400)), -mangoPNG.height, mangoPNG.width, mangoPNG.height));   //  Adds a new bubble to the array with a random x position
-  }
+}
 
 
   if (print1==15) {
     bubbles2.add(new Bubble(int(random(600, 16000)), -mangoPNG2.height, mangoPNG2.width, mangoPNG2.height));   //  Adds a new bubble to the array with a random x position
   }
-  
 
   
   if((print1==0) && ((poppedBubbles>=0) && (poppedBubbles<=80))){
@@ -292,9 +268,6 @@ void run_game() {
     bubbles.clear();
     bubbles1.clear();
   }  
-
-
-
 }
 
 void intro() {
@@ -311,46 +284,13 @@ void win_game() {
   image(src, 0, 0, 1280, 720); 
   image(img1,0,0,1280,720);
   image(center_mango,0,0,1280,720);
-  
- // sw.stop();
-  
- /* image(bottle_cut, 0, 40, 1280, 720);
-  fill(#F58E07, -70);
-  rect(57, 693, 60, -poppedBubbles*1.5);
 
-  image(bottle_1, 0, 40, 1280, 720);
-  
-  */
   image(score_vg,0,0,1280,720);
     
   show_score();
-  image(fo,0,0,1280,720);
-  /*if(sw.second()==45){
-  gameState=POST_SCORE;
-  }*/
-  
-    
-    
-}
+  image(fo,0,0,1280,720);}
 
 void game_over() {
-
-/*  opencv.read();
-  opencv.flip(OpenCV.FLIP_HORIZONTAL);  
-  image(opencv.image(), 0, 0, 1280, 720); 
-  
-  sw.stop();
-  image(bottle_cut, 0, 40, 1280, 720);
-  fill(#F58E07, -70);
-  rect(60, 700, 60, -poppedBubbles*1.5);
-
-  image(bottle_1, 0, 40, 1280, 720);
-  
-  image(score_nt,0,40,1280,720);
-
-  show_score();
-  */
-  
   
   opencv.loadImage(cam);
   opencv.flip(OpenCV.HORIZONTAL);
@@ -358,29 +298,13 @@ void game_over() {
   image(src, 0, 0, 1280, 720); 
  
   image(img1,0,0,1280,720);
-  //image(center_mango,0,-50,1280,720);
- image(center_mango,0,0,1280,720); 
- /* image(bottle_cut, 0, 40, 1280, 720);
-  fill(#F58E07, -70);
-  rect(57, 693, 60, -poppedBubbles*1.5);
 
-  image(bottle_1, 0, 40, 1280, 720);
- */ 
+ image(center_mango,0,0,1280,720); 
+
   image(score_nt,0,0,1280,720);
   show_score();
   image(fo,0,0,1280,720);
- // sw.start();
-  //text("Time: "+sw.second(),100,500);
-  /*if(sw.second()==45){
-  gameState=POST_SCORE;
-  }
-  */
 
-  
-  
-  
-  
-  
 }
 
 void show_score() {
@@ -430,10 +354,6 @@ void keyPressed() {
  
   if(keyCode==' '){
   if((gameState==WIN_GAME) || (gameState==GAME_OVER) || (gameState==BUMPER_PRIZE)){
-  //  open("D:\\processing-1.5.1\\Sketchbook\\new_game18\\data\\n.bat");
-   
-     //  OpenCV("//Processing3//sketchbook//examples//frooti_1//data//temp.bat");
-
     sw.start();
   }
   }
@@ -453,8 +373,6 @@ void keyPressed() {
   if(key == 'w'){
     j = j - 5;
   }
-  
- 
   }
 
 
@@ -466,47 +384,13 @@ void bumper_prize() {
   image(src, 0, 0, 1280, 720); 
   
   image(img1,0,0,1280,720);
- // image(center_mango,0,0,1280,720);
+ 
     image(center_mango,0,0,1280,720);
-/*  image(bottle_cut, 0, 40, 1280, 720);
-  fill(#F58E07, -70);
-  rect(57, 693, 60, -poppedBubbles*1.5);
 
-  image(bottle_1, 0, 40, 1280, 720);
-  */
   
   image(score_bt,0,0,1280,720);
  
   show_score();
-  
- //   text("Time: "+sw.second(),100,500);
- /* if(sw.second()==45){
-  gameState=POST_SCORE;
-  }
-  */
-  
   image(fo,0,0,1280,720);
  
 }
-/*void post_score(){
-
-  opencv.read();
-  opencv.flip(OpenCV.FLIP_HORIZONTAL);        //  Flips the image horizontally
-
-  image(opencv.image(),0,0,1280,720);
-  image(post_score,0,0,1280,720);
-//  text((sw.second()),100,500);
-  
-  /*if(sw.second()==50){
-    frameRate(1);
-    open("D:\\processing-1.5.1\\Sketchbook\\new_game18\\data\\n.bat");
-  }
-  if(sw.second()==51){
-    frameRate(22);
-  }
-  
-  
-  
-  
-}
-*/
